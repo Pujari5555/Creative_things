@@ -30,12 +30,17 @@ function runCountdown(n) {
 }
 
 function celebrate() {
-  document.body.classList.add("celebrated");
+  ocument.body.classList.add("celebrated");
   card.classList.add("hide");
   wish.classList.add("show");
 
-  music.play().catch(() => {});
+  music.play().catch(()=>{});
   animateName("VISHNU");
+
+  confetti();
+  balloons();
+  fireworks();
+  fallingFlowers();   // 🌸 NEW
 
   setTimeout(resetPage, 12000);
 }
@@ -57,3 +62,19 @@ function resetPage() {
   card.classList.remove("hide");
   wish.classList.remove("show");
 }
+
+function fallingFlowers() {
+  const petals = ["🌸", "🌼", "🌺", "🍀", "✨"];
+
+  for (let i = 0; i < 40; i++) {
+    const p = document.createElement("div");
+    p.className = "petal";
+    p.textContent = petals[Math.floor(Math.random() * petals.length)];
+    p.style.left = Math.random() * window.innerWidth + "px";
+    p.style.animationDuration = Math.random() * 4 + 4 + "s";
+
+    document.body.appendChild(p);
+    effects.push(p);
+  }
+}
+
