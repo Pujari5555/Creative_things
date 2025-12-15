@@ -1,21 +1,81 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Birthday Wish</title>
+  <meta charset="UTF-8">
+  <title>Happy Birthday 🎉</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      font-family: Arial, sans-serif;
+      color: #fff;
+      text-align: center;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 40px;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      font-size: 28px;
+    }
+
+    p {
+      font-size: 18px;
+      line-height: 1.5;
+      margin-bottom: 25px;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 25px;
+      background: #ffd166;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #ffbe0b;
+    }
+
+    #wish {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+  </style>
 </head>
-<body style="text-align:center; margin-top:100px; font-family:Arial;">
 
-  <button onclick="wish()" style="padding:15px 25px; font-size:16px;">
-    Click for Birthday Wish 🎉
-  </button>
+<body>
 
-  <h2 id="msg" style="margin-top:30px;"></h2>
+  <div class="card">
+    <h1>🎂 Happy Birthday 🎂</h1>
+    <p>Click the button to see a special wish</p>
+
+    <button onclick="showWish()">Click for Birthday Wish 🎉</button>
+
+    <div id="wish"></div>
+  </div>
 
   <script>
-    function wish() {
-      document.getElementById("msg").innerText =
-        "Another year older, still cool 😎 Happy Birthday! VISHNU";
+    function showWish() {
+      document.getElementById("wish").innerText =
+        "Another year older, still cool 😎\nWishing you happiness, success, and good health always!";
     }
   </script>
+
 </body>
 </html>
