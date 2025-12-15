@@ -2,59 +2,66 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Happy Birthday 🎉</title>
+  <title>Happy Birthday</title>
 
   <style>
     body {
       margin: 0;
       height: 100vh;
+      overflow: hidden;
       display: flex;
       justify-content: center;
       align-items: center;
-      background: linear-gradient(135deg, #667eea, #764ba2);
+      background: #111827;
       font-family: Arial, sans-serif;
       color: #fff;
-      text-align: center;
     }
 
     .card {
-      background: rgba(255, 255, 255, 0.15);
+      z-index: 2;
+      background: #1f2933;
       padding: 40px;
-      border-radius: 16px;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
 
     h1 {
-      margin-bottom: 10px;
+      margin-bottom: 20px;
       font-size: 28px;
-    }
-
-    p {
-      font-size: 18px;
-      line-height: 1.5;
-      margin-bottom: 25px;
     }
 
     button {
       padding: 12px 24px;
       font-size: 16px;
       border: none;
-      border-radius: 25px;
-      background: #ffd166;
+      border-radius: 6px;
       cursor: pointer;
+      background: #22c55e;
+      color: #000;
       font-weight: bold;
-    }
-
-    button:hover {
-      background: #ffbe0b;
     }
 
     #wish {
       margin-top: 20px;
       font-size: 20px;
-      font-weight: bold;
+      display: none;
+    }
+
+    .confetti {
+      position: absolute;
+      width: 8px;
+      height: 14px;
+      background: red;
+      top: -20px;
+      animation: fall linear infinite;
+      opacity: 0.9;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(360deg);
+      }
     }
   </style>
 </head>
@@ -63,17 +70,28 @@
 
   <div class="card">
     <h1>🎂 Happy Birthday 🎂</h1>
-    <p>Click the button to see a special wish</p>
-
-    <button onclick="showWish()">Click for Birthday Wish 🎉</button>
-
-    <div id="wish"></div>
+    <button onclick="celebrate()">Click to Celebrate 🎉</button>
+    <div id="wish">Another year older, still cool 😎</div>
   </div>
 
   <script>
-    function showWish() {
-      document.getElementById("wish").innerText =
-        "Another year older, still cool 😎\nWishing you happiness, success, and good health always!";
+    function celebrate() {
+      document.getElementById("wish").style.display = "block";
+
+      for (let i = 0; i < 120; i++) {
+        const confetti = document.createElement("div");
+        confetti.className = "confetti";
+
+        confetti.style.left = Math.random() * window.innerWidth + "px";
+        confetti.style.background =
+          `hsl(${Math.random() * 360}, 100%, 50%)`;
+        confetti.style.animationDuration =
+          Math.random() * 3 + 2 + "s";
+
+        document.body.appendChild(confetti);
+
+        setTimeout(() => confetti.remove(), 5000);
+      }
     }
   </script>
 
