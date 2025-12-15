@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Happy Birthday</title>
+  <title>Happy Birthday VISHNU</title>
 
   <style>
     body {
@@ -24,6 +24,11 @@
       border-radius: 12px;
       text-align: center;
       box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      transition: box-shadow 0.5s ease;
+    }
+
+    .glow {
+      box-shadow: 0 0 35px #22c55e;
     }
 
     h1 {
@@ -48,11 +53,11 @@
       display: none;
     }
 
+    /* Confetti */
     .confetti {
       position: absolute;
       width: 8px;
       height: 14px;
-      background: red;
       top: -20px;
       animation: fall linear infinite;
       opacity: 0.9;
@@ -63,6 +68,23 @@
         transform: translateY(110vh) rotate(360deg);
       }
     }
+
+    /* Balloons */
+    .balloon {
+      position: absolute;
+      bottom: -60px;
+      width: 28px;
+      height: 38px;
+      border-radius: 50%;
+      animation: floatUp linear infinite;
+      opacity: 0.85;
+    }
+
+    @keyframes floatUp {
+      to {
+        transform: translateY(-120vh);
+      }
+    }
   </style>
 </head>
 
@@ -70,18 +92,19 @@
 
   <div class="card">
     <h1>🎂 Happy Birthday 🎂</h1>
-    <button onclick="celebrate()">Click to Celebrate 🎉</button>
+    <button onclick="celebrate()">Start the Celebration 🎉</button>
     <div id="wish">Another year older, still cool 😎</div>
   </div>
 
   <script>
     function celebrate() {
       document.getElementById("wish").style.display = "block";
+      document.querySelector(".card").classList.add("glow");
 
+      // Confetti
       for (let i = 0; i < 120; i++) {
         const confetti = document.createElement("div");
         confetti.className = "confetti";
-
         confetti.style.left = Math.random() * window.innerWidth + "px";
         confetti.style.background =
           `hsl(${Math.random() * 360}, 100%, 50%)`;
@@ -89,8 +112,21 @@
           Math.random() * 3 + 2 + "s";
 
         document.body.appendChild(confetti);
-
         setTimeout(() => confetti.remove(), 5000);
+      }
+
+      // Balloons
+      for (let i = 0; i < 15; i++) {
+        const balloon = document.createElement("div");
+        balloon.className = "balloon";
+        balloon.style.left = Math.random() * window.innerWidth + "px";
+        balloon.style.background =
+          `hsl(${Math.random() * 360}, 70%, 60%)`;
+        balloon.style.animationDuration =
+          Math.random() * 6 + 6 + "s";
+
+        document.body.appendChild(balloon);
+        setTimeout(() => balloon.remove(), 10000);
       }
     }
   </script>
