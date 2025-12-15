@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Happy Birthday Vishnu</title>
 
-  <!-- Strict CSP (safe) -->
+  <!-- Strict CSP -->
   <meta http-equiv="Content-Security-Policy"
         content="
           default-src 'self';
@@ -18,6 +18,10 @@
 
 <body>
 
+  <!-- 🌌 BACKGROUND -->
+  <div class="bg-layer"></div>
+
+  <!-- CARD -->
   <div class="card" id="card">
     <h1>🎂 Happy Birthday Vishnu 🎂</h1>
     <button id="startBtn" type="button">
@@ -25,21 +29,23 @@
     </button>
   </div>
 
+  <!-- COUNTDOWN -->
   <div class="countdown" id="countdown"></div>
 
+  <!-- WISH -->
   <div class="wish" id="wish">
     <h2 id="name"></h2>
     <p>
-      🎂 Happy Birthday Brother 😎<br>
-      🎈 Have a blast this year 🎊✨
+      🎂 Happy Birthday, Brother 😎<br>
+      🌸 Have a blast this year 🎊✨
     </p>
   </div>
 
+  <!-- MUSIC -->
   <audio id="music">
     <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
   </audio>
 
-  <!-- External JS ONLY -->
   <script src="script.js"></script>
 </body>
 </html>
