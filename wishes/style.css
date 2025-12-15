@@ -5,16 +5,23 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #111827;
+  background: #000;
   font-family: Arial, sans-serif;
   color: #fff;
-  transition: background 0.8s ease;
 }
 
-body.celebrated {
-  background: #000;
+/* 🌌 BACKGROUND LAYER */
+.bg-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,0.08), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(255,255,255,0.06), transparent 40%),
+    linear-gradient(135deg, #020617, #000);
 }
 
+/* CARD */
 .card {
   position: relative;
   z-index: 3;
@@ -36,13 +43,7 @@ body.celebrated {
   position: absolute;
   inset: -3px;
   border-radius: 16px;
-  background: linear-gradient(
-    120deg,
-    #22c55e,
-    #3b82f6,
-    #a855f7,
-    #22c55e
-  );
+  background: linear-gradient(120deg,#22c55e,#3b82f6,#a855f7,#22c55e);
   background-size: 300% 300%;
   animation: borderGlow 6s linear infinite;
   filter: blur(10px);
@@ -64,25 +65,23 @@ button {
   cursor: pointer;
 }
 
+/* COUNTDOWN */
 .countdown {
   position: absolute;
   font-size: 80px;
+  z-index: 4;
   opacity: 0;
 }
+.countdown.show { opacity: 1; }
 
-.countdown.show {
-  opacity: 1;
-}
-
+/* WISH */
 .wish {
   position: absolute;
   text-align: center;
+  z-index: 3;
   opacity: 0;
 }
-
-.wish.show {
-  opacity: 1;
-}
+.wish.show { opacity: 1; }
 
 .wish h2 {
   font-size: 48px;
@@ -94,19 +93,69 @@ button {
   line-height: 1.8;
 }
 
-/* 🌸 FLOWERS / PAPER PETALS */
+/* 🌸 FLOWERS / PAPER */
 .petal {
   position: absolute;
   top: -30px;
-  font-size: 20px;
-  animation-name: petalFall;
-  animation-timing-function: linear;
+  font-size: 26px;
+  opacity: 0.9;
+  animation: petalFall linear infinite;
+  z-index: 2;
   pointer-events: none;
 }
 
 @keyframes petalFall {
   to {
     transform: translateY(110vh) rotate(360deg);
-    opacity: 0.8;
+  }
+}
+
+/* 🎊 CONFETTI */
+.confetti {
+  position: absolute;
+  top: -20px;
+  width: 8px;
+  height: 14px;
+  animation: fall linear infinite;
+  z-index: 2;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(360deg);
+  }
+}
+
+/* 🎈 BALLOONS */
+.balloon {
+  position: absolute;
+  bottom: -60px;
+  width: 30px;
+  height: 40px;
+  border-radius: 50%;
+  animation: floatUp linear infinite;
+  z-index: 2;
+}
+
+@keyframes floatUp {
+  to {
+    transform: translateY(-120vh);
+  }
+}
+
+/* 🎆 FIREWORK */
+.firework {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  animation: explode 1s ease-out forwards;
+  z-index: 2;
+}
+
+@keyframes explode {
+  to {
+    transform: translate(var(--x), var(--y)) scale(0);
+    opacity: 0;
   }
 }
