@@ -93,3 +93,20 @@ button {
   font-size: 28px;
   line-height: 1.8;
 }
+
+/* 🌸 FLOWERS / PAPER PETALS */
+.petal {
+  position: absolute;
+  top: -30px;
+  font-size: 20px;
+  animation-name: petalFall;
+  animation-timing-function: linear;
+  pointer-events: none;
+}
+
+@keyframes petalFall {
+  to {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0.8;
+  }
+}
