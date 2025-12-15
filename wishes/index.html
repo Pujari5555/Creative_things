@@ -53,6 +53,7 @@
       font-weight: bold;
     }
 
+    /* Wish Screen */
     .wish-screen {
       position: absolute;
       text-align: center;
@@ -90,12 +91,53 @@
         transform: translateY(110vh) rotate(360deg);
       }
     }
+
+    /* Balloons */
+    .balloon {
+      position: absolute;
+      bottom: -60px;
+      width: 28px;
+      height: 38px;
+      border-radius: 50%;
+      animation: floatUp linear infinite;
+      opacity: 0.85;
+    }
+
+    @keyframes floatUp {
+      to {
+        transform: translateY(-120vh);
+      }
+    }
+
+    /* Cake emoji */
+    .cake {
+      position: absolute;
+      bottom: -40px;
+      font-size: 26px;
+      animation: floatUp linear infinite;
+    }
+
+    /* Fireworks */
+    .firework {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      animation: explode 1s ease-out forwards;
+    }
+
+    @keyframes explode {
+      to {
+        transform: translate(var(--x), var(--y)) scale(0);
+        opacity: 0;
+      }
+    }
   </style>
 </head>
 
 <body>
 
-  <!-- Initial Card -->
+  <!-- Initial Screen -->
   <div class="card" id="card">
     <h1>🎂 Happy Birthday 🎂</h1>
     <button onclick="celebrate()">Start the Celebration 🎉</button>
@@ -105,32 +147,76 @@
   <div class="wish-screen" id="wishScreen">
     <h2>Happy Birthday, Brother 🎉</h2>
     <p>
-      Another year older, still cool 😎<br><br>
-      Wishing you a great year ahead.
+      Another year older, still cool 😎<br>
+      Have a great year ahead!
     </p>
   </div>
 
   <script>
+    let effects = [];
+
     function celebrate() {
       document.body.classList.add("celebrated");
       document.getElementById("card").classList.add("hide");
-
-      const wish = document.getElementById("wishScreen");
-      wish.classList.add("show");
+      document.getElementById("wishScreen").classList.add("show");
 
       // Confetti
-      for (let i = 0; i < 150; i++) {
-        const confetti = document.createElement("div");
-        confetti.className = "confetti";
-        confetti.style.left = Math.random() * window.innerWidth + "px";
-        confetti.style.background =
-          `hsl(${Math.random() * 360}, 100%, 50%)`;
-        confetti.style.animationDuration =
-          Math.random() * 3 + 2 + "s";
-
-        document.body.appendChild(confetti);
-        setTimeout(() => confetti.remove(), 6000);
+      for (let i = 0; i < 120; i++) {
+        const c = document.createElement("div");
+        c.className = "confetti";
+        c.style.left = Math.random() * window.innerWidth + "px";
+        c.style.background = `hsl(${Math.random()*360},100%,50%)`;
+        c.style.animationDuration = Math.random()*3 + 2 + "s";
+        document.body.appendChild(c);
+        effects.push(c);
       }
+
+      // Balloons
+      for (let i = 0; i < 20; i++) {
+        const b = document.createElement("div");
+        b.className = "balloon";
+        b.style.left = Math.random() * window.innerWidth + "px";
+        b.style.background = `hsl(${Math.random()*360},70%,60%)`;
+        b.style.animationDuration = Math.random()*6 + 6 + "s";
+        document.body.appendChild(b);
+        effects.push(b);
+      }
+
+      // Cake emojis
+      for (let i = 0; i < 12; i++) {
+        const cake = document.createElement("div");
+        cake.className = "cake";
+        cake.innerText = "🎂";
+        cake.style.left = Math.random() * window.innerWidth + "px";
+        cake.style.animationDuration = Math.random()*5 + 5 + "s";
+        document.body.appendChild(cake);
+        effects.push(cake);
+      }
+
+      // Fireworks
+      for (let i = 0; i < 40; i++) {
+        const fw = document.createElement("div");
+        fw.className = "firework";
+        fw.style.left = "50%";
+        fw.style.top = "50%";
+        fw.style.background = `hsl(${Math.random()*360},100%,60%)`;
+        fw.style.setProperty("--x", `${Math.random()*400 - 200}px`);
+        fw.style.setProperty("--y", `${Math.random()*400 - 200}px`);
+        document.body.appendChild(fw);
+        effects.push(fw);
+      }
+
+      // Auto reset after 8 seconds
+      setTimeout(resetPage, 8000);
+    }
+
+    function resetPage() {
+      document.body.classList.remove("celebrated");
+      document.getElementById("card").classList.remove("hide");
+      document.getElementById("wishScreen").classList.remove("show");
+
+      effects.forEach(el => el.remove());
+      effects = [];
     }
   </script>
 
