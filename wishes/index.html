@@ -2,51 +2,290 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Happy Birthday Vishnu</title>
+  <title>Happy Birthday VISHNU</title>
 
-  <!-- Strict CSP -->
-  <meta http-equiv="Content-Security-Policy"
-        content="
-          default-src 'self';
-          script-src 'self';
-          style-src 'self';
-          media-src https://www.soundhelix.com;
-        ">
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #111827;
+      font-family: Arial, sans-serif;
+      color: #fff;
+      transition: background 0.8s ease;
+    }
 
-  <link rel="stylesheet" href="style.css">
+    body.celebrated {
+      background: #000;
+    }
+
+    /* ===== CARD ===== */
+    .card {
+      position: relative;
+      z-index: 2;
+      background: #1f2933;
+      padding: 40px;
+      border-radius: 14px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(34,197,94,0.3);
+      transition: opacity 0.6s ease, box-shadow 0.6s ease;
+    }
+
+    /* Neon border glow */
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -3px;
+      border-radius: 16px;
+      background: linear-gradient(
+        120deg,
+        #22c55e,
+        #3b82f6,
+        #a855f7,
+        #22c55e
+      );
+      background-size: 300% 300%;
+      animation: borderGlow 6s linear infinite;
+      z-index: -1;
+      filter: blur(8px);
+      opacity: 0.7;
+    }
+
+    /* Light sweep */
+    .card::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,0.15),
+        transparent
+      );
+      animation: sweep 4s infinite;
+    }
+
+    @keyframes borderGlow {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 300% 50%; }
+    }
+
+    @keyframes sweep {
+      0% { left: -100%; }
+      50% { left: 120%; }
+      100% { left: 120%; }
+    }
+
+    .card.glow-strong {
+      box-shadow: 0 0 40px rgba(34,197,94,0.9);
+    }
+
+    .hide {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 28px;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background: #22c55e;
+      color: #000;
+      font-weight: bold;
+    }
+
+    /* ===== WISH SCREEN ===== */
+    .wish-screen {
+      position: absolute;
+      text-align: center;
+      max-width: 80%;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    .wish-screen.show {
+      opacity: 1;
+    }
+
+    .wish-screen h2 {
+      font-size: 34px;
+      margin-bottom: 20px;
+    }
+
+    .wish-screen p {
+      font-size: 20px;
+      line-height: 1.6;
+    }
+
+    /* ===== CONFETTI ===== */
+    .confetti {
+      position: absolute;
+      width: 8px;
+      height: 14px;
+      top: -20px;
+      animation: fall linear infinite;
+      opacity: 0.9;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(360deg);
+      }
+    }
+
+    /* ===== BALLOONS ===== */
+    .balloon {
+      position: absolute;
+      bottom: -60px;
+      width: 28px;
+      height: 38px;
+      border-radius: 50%;
+      animation: floatUp linear infinite;
+      opacity: 0.85;
+    }
+
+    @keyframes floatUp {
+      to {
+        transform: translateY(-120vh);
+      }
+    }
+
+    /* ===== CAKE ===== */
+    .cake {
+      position: absolute;
+      bottom: -40px;
+      font-size: 26px;
+      animation: floatUp linear infinite;
+    }
+
+    /* ===== FIREWORK ===== */
+    .firework {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      animation: explode 1s ease-out forwards;
+    }
+
+    @keyframes explode {
+      to {
+        transform: translate(var(--x), var(--y)) scale(0);
+        opacity: 0;
+      }
+    }
+
+    /* ===== BACKGROUND SPARKLES ===== */
+    .sparkle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.5;
+      animation: twinkle 3s infinite;
+    }
+
+    @keyframes twinkle {
+      50% { opacity: 0.1; }
+    }
+  </style>
 </head>
 
 <body>
 
-  <!-- 🌌 BACKGROUND -->
-  <div class="bg-layer"></div>
-
-  <!-- CARD -->
+  <!-- Initial Screen -->
   <div class="card" id="card">
-    <h1>🎂 Happy Birthday Vishnu 🎂</h1>
-    <button id="startBtn" type="button">
-      Start the Celebration 🎉
-    </button>
+    <h1>🎂 Happy Birthday 🎂</h1>
+    <button onclick="celebrate()">Start the Celebration 🎉</button>
   </div>
 
-  <!-- COUNTDOWN -->
-  <div class="countdown" id="countdown"></div>
-
-  <!-- WISH -->
-  <div class="wish" id="wish">
-    <h2 id="name"></h2>
+  <!-- Wish Screen -->
+  <div class="wish-screen" id="wishScreen">
+    <h2>Happy Birthday, Brother 🎉</h2>
     <p>
-      🎂 Happy Birthday, Brother 😎<br>
-      🌸 Have a blast this year 🎊✨
+      Another year older, still cool 😎<br>
+      Have a great year ahead!
     </p>
   </div>
 
-  <!-- MUSIC -->
-  <audio id="music">
-    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
-  </audio>
+  <script>
+    let effects = [];
 
-  <script src="script.js" defer></script>
+    // subtle sparkles always
+    for (let i = 0; i < 30; i++) {
+      const s = document.createElement("div");
+      s.className = "sparkle";
+      s.style.top = Math.random()*window.innerHeight+"px";
+      s.style.left = Math.random()*window.innerWidth+"px";
+      document.body.appendChild(s);
+      effects.push(s);
+    }
+
+    function celebrate() {
+      document.body.classList.add("celebrated");
+      document.getElementById("card").classList.add("hide", "glow-strong");
+      document.getElementById("wishScreen").classList.add("show");
+
+      // Confetti
+      for (let i = 0; i < 120; i++) {
+        const c = document.createElement("div");
+        c.className = "confetti";
+        c.style.left = Math.random() * window.innerWidth + "px";
+        c.style.background = `hsl(${Math.random()*360},100%,50%)`;
+        c.style.animationDuration = Math.random()*3 + 2 + "s";
+        document.body.appendChild(c);
+        effects.push(c);
+      }
+
+      // Balloons
+      for (let i = 0; i < 25; i++) {
+        const b = document.createElement("div");
+        b.className = "balloon";
+        b.style.left = Math.random() * window.innerWidth + "px";
+        b.style.background = `hsl(${Math.random()*360},70%,60%)`;
+        b.style.animationDuration = Math.random()*6 + 6 + "s";
+        document.body.appendChild(b);
+        effects.push(b);
+      }
+
+      // Fireworks
+      for (let i = 0; i < 40; i++) {
+        const fw = document.createElement("div");
+        fw.className = "firework";
+        fw.style.left = "50%";
+        fw.style.top = "50%";
+        fw.style.background = `hsl(${Math.random()*360},100%,60%)`;
+        fw.style.setProperty("--x", `${Math.random()*400 - 200}px`);
+        fw.style.setProperty("--y", `${Math.random()*400 - 200}px`);
+        document.body.appendChild(fw);
+        effects.push(fw);
+      }
+
+      setTimeout(resetPage, 9000);
+    }
+
+    function resetPage() {
+      document.body.classList.remove("celebrated");
+      document.getElementById("card").classList.remove("hide", "glow-strong");
+      document.getElementById("wishScreen").classList.remove("show");
+
+      effects.forEach(e => e.remove());
+      effects = [];
+    }
+  </script>
 
 </body>
 </html>
