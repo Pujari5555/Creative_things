@@ -125,104 +125,126 @@ button{
 </audio>
 
 <script>
-let effects=[],fireInt;
+  let effects = [], fireInt;
 
-function start(){
-  emojiBurst();
-  if(navigator.vibrate) navigator.vibrate(150);
-  countdown(3);
-}
+  // FIX: get elements properly
+  const card = document.getElementById("card");
+  const wish = document.getElementById("wish");
+  const name = document.getElementById("name");
+  const music = document.getElementById("music");
+  const count = document.getElementById("count");
 
-function countdown(n){
-  const c=document.getElementById("count");
-  c.textContent=n;
-  c.classList.add("show");
-  if(n>0) setTimeout(()=>countdown(n-1),800);
-  else{
-    c.classList.remove("show");
-    celebrate();
+  function start() {
+    emojiBurst();
+    if (navigator.vibrate) navigator.vibrate(150);
+    countdown(3);
   }
-}
 
-function celebrate(){
-  document.body.classList.add("celebrated");
-  card.classList.add("hide");
-  wish.classList.add("show");
-  music.play();
-  animateName("VISHNU");
-  effectsConfetti();
-  effectsBalloons();
-  continuousFireworks();
-  setTimeout(resetPage,12000);
-}
+  function countdown(n) {
+    count.textContent = n > 0 ? n : "🎉";
+    count.classList.add("show");
 
-function animateName(text){
-  name.innerHTML="";
-  [...text].forEach((ch,i)=>{
-    setTimeout(()=>name.innerHTML+=ch+" ",i*300);
-  });
-}
-
-function effectsConfetti(){
-  for(let i=0;i<120;i++){
-    let c=document.createElement("div");
-    c.className="confetti";
-    c.style.left=Math.random()*innerWidth+"px";
-    c.style.width="8px";c.style.height="14px";
-    c.style.background=`hsl(${Math.random()*360},100%,50%)`;
-    c.style.animationDuration=Math.random()*3+2+"s";
-    document.body.appendChild(c);effects.push(c);
-  }
-}
-
-function effectsBalloons(){
-  for(let i=0;i<20;i++){
-    let b=document.createElement("div");
-    b.className="balloon";
-    b.style.left=Math.random()*innerWidth+"px";
-    b.style.background=`hsl(${Math.random()*360},70%,60%)`;
-    b.style.animationDuration=Math.random()*6+6+"s";
-    document.body.appendChild(b);effects.push(b);
-  }
-}
-
-function continuousFireworks(){
-  fireInt=setInterval(()=>{
-    for(let i=0;i<15;i++){
-      let f=document.createElement("div");
-      f.className="firework";
-      f.style.left="50%";f.style.top="50%";
-      f.style.background=`hsl(${Math.random()*360},100%,60%)`;
-      f.style.setProperty("--x",`${Math.random()*400-200}px`);
-      f.style.setProperty("--y",`${Math.random()*400-200}px`);
-      document.body.appendChild(f);effects.push(f);
+    if (n > 0) {
+      setTimeout(() => countdown(n - 1), 800);
+    } else {
+      setTimeout(() => {
+        count.classList.remove("show");
+        celebrate();
+      }, 500);
     }
-  },1500);
-}
-
-function emojiBurst(){
-  const emojis=["🎉","🎊","✨","🎂","🎁"];
-  for(let i=0;i<25;i++){
-    let e=document.createElement("div");
-    e.className="emoji";
-    e.innerText=emojis[Math.floor(Math.random()*emojis.length)];
-    e.style.left=Math.random()*innerWidth+"px";
-    e.style.fontSize="22px";
-    e.style.animationDuration=Math.random()*3+2+"s";
-    document.body.appendChild(e);effects.push(e);
   }
-}
 
-function resetPage(){
-  clearInterval(fireInt);
-  music.pause();music.currentTime=0;
-  document.body.classList.remove("celebrated");
-  card.classList.remove("hide");
-  wish.classList.remove("show");
-  effects.forEach(e=>e.remove());
-  effects=[];
-}
+  function celebrate() {
+    document.body.classList.add("celebrated");
+    card.classList.add("hide");
+    wish.classList.add("show");
+    music.play();
+
+    animateName("VISHNU");
+    effectsConfetti();
+    effectsBalloons();
+    continuousFireworks();
+
+    setTimeout(resetPage, 12000);
+  }
+
+  function animateName(text) {
+    name.innerHTML = "";
+    [...text].forEach((ch, i) => {
+      setTimeout(() => {
+        name.innerHTML += ch + " ";
+      }, i * 300);
+    });
+  }
+
+  function effectsConfetti() {
+    for (let i = 0; i < 120; i++) {
+      const c = document.createElement("div");
+      c.className = "confetti";
+      c.style.left = Math.random() * innerWidth + "px";
+      c.style.background = `hsl(${Math.random() * 360},100%,50%)`;
+      c.style.animationDuration = Math.random() * 3 + 2 + "s";
+      document.body.appendChild(c);
+      effects.push(c);
+    }
+  }
+
+  function effectsBalloons() {
+    for (let i = 0; i < 20; i++) {
+      const b = document.createElement("div");
+      b.className = "balloon";
+      b.style.left = Math.random() * innerWidth + "px";
+      b.style.background = `hsl(${Math.random() * 360},70%,60%)`;
+      b.style.animationDuration = Math.random() * 6 + 6 + "s";
+      document.body.appendChild(b);
+      effects.push(b);
+    }
+  }
+
+  function continuousFireworks() {
+    fireInt = setInterval(() => {
+      for (let i = 0; i < 15; i++) {
+        const f = document.createElement("div");
+        f.className = "firework";
+        f.style.left = "50%";
+        f.style.top = "50%";
+        f.style.background = `hsl(${Math.random() * 360},100%,60%)`;
+        f.style.setProperty("--x", `${Math.random() * 400 - 200}px`);
+        f.style.setProperty("--y", `${Math.random() * 400 - 200}px`);
+        document.body.appendChild(f);
+        effects.push(f);
+      }
+    }, 1500);
+  }
+
+  function emojiBurst() {
+    const emojis = ["🎉", "🎊", "✨", "🎂", "🎁"];
+    for (let i = 0; i < 25; i++) {
+      const e = document.createElement("div");
+      e.className = "emoji";
+      e.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+      e.style.left = Math.random() * innerWidth + "px";
+      e.style.fontSize = "22px";
+      e.style.animationDuration = Math.random() * 3 + 2 + "s";
+      document.body.appendChild(e);
+      effects.push(e);
+    }
+  }
+
+  function resetPage() {
+    clearInterval(fireInt);
+    music.pause();
+    music.currentTime = 0;
+
+    document.body.classList.remove("celebrated");
+    card.classList.remove("hide");
+    wish.classList.remove("show");
+
+    effects.forEach(e => e.remove());
+    effects = [];
+  }
 </script>
+
 
 </body>
 </html>
