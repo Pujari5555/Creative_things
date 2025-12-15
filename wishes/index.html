@@ -4,164 +4,29 @@
   <meta charset="UTF-8">
   <title>Happy Birthday Vishnu</title>
 
-  <!-- Optional CSP (safe, no eval) -->
+  <!-- Strict CSP (safe) -->
   <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self' https://www.soundhelix.com;
-                 script-src 'self';
-                 style-src 'self' 'unsafe-inline';
-                 media-src https://www.soundhelix.com;">
+        content="
+          default-src 'self';
+          script-src 'self';
+          style-src 'self';
+          media-src https://www.soundhelix.com;
+        ">
 
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #111827;
-      font-family: Arial, sans-serif;
-      color: #fff;
-      transition: background 0.8s ease;
-    }
-
-    body.celebrated { background: #000; }
-
-    /* CARD */
-    .card {
-      position: relative;
-      z-index: 3;
-      background: #1f2933;
-      padding: 40px;
-      border-radius: 14px;
-      text-align: center;
-      box-shadow: 0 0 20px rgba(34,197,94,0.4);
-      transition: opacity 0.6s ease;
-    }
-
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: -3px;
-      border-radius: 16px;
-      background: linear-gradient(120deg,#22c55e,#3b82f6,#a855f7,#22c55e);
-      background-size: 300% 300%;
-      animation: borderGlow 6s linear infinite;
-      filter: blur(10px);
-      z-index: -1;
-    }
-
-    @keyframes borderGlow {
-      0% { background-position: 0% 50%; }
-      100% { background-position: 300% 50%; }
-    }
-
-    .hide { opacity: 0; pointer-events: none; }
-
-    h1 { font-size: 28px; margin-bottom: 20px; }
-
-    button {
-      padding: 12px 26px;
-      font-size: 16px;
-      border: none;
-      border-radius: 6px;
-      background: #22c55e;
-      color: #000;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    /* COUNTDOWN */
-    .countdown {
-      position: absolute;
-      font-size: 80px;
-      opacity: 0;
-      z-index: 4;
-      transition: opacity 0.3s;
-    }
-    .countdown.show { opacity: 1; }
-
-    /* WISH */
-    .wish {
-      position: absolute;
-      text-align: center;
-      opacity: 0;
-      z-index: 3;
-    }
-    .wish.show { opacity: 1; }
-
-    .wish h2 {
-      font-size: 48px;
-      letter-spacing: 4px;
-    }
-
-    .wish p {
-      font-size: 28px;
-      line-height: 1.8;
-      background: linear-gradient(90deg,#22c55e,#3b82f6,#a855f7);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: gradientText 4s infinite linear;
-    }
-
-    @keyframes gradientText {
-      from { background-position: 0%; }
-      to   { background-position: 200%; }
-    }
-
-    /* EFFECTS */
-    .confetti,.emoji {
-      position: absolute;
-      top: -20px;
-      animation: fall linear infinite;
-    }
-
-    @keyframes fall {
-      to { transform: translateY(110vh) rotate(360deg); }
-    }
-
-    .balloon {
-      position: absolute;
-      bottom: -60px;
-      width: 30px;
-      height: 40px;
-      border-radius: 50%;
-      animation: floatUp linear infinite;
-    }
-
-    @keyframes floatUp {
-      to { transform: translateY(-120vh); }
-    }
-
-    .firework {
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      animation: explode 1s ease-out forwards;
-    }
-
-    @keyframes explode {
-      to {
-        transform: translate(var(--x), var(--y)) scale(0);
-        opacity: 0;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <!-- START CARD -->
-  <div class="card" id="card" aria-live="polite">
+  <div class="card" id="card">
     <h1>🎂 Happy Birthday Vishnu 🎂</h1>
-    <button type="button" onclick="start()">Start the Celebration 🎉</button>
+    <button id="startBtn" type="button">
+      Start the Celebration 🎉
+    </button>
   </div>
 
-  <!-- COUNTDOWN -->
-  <div class="countdown" id="countdown" aria-hidden="true"></div>
+  <div class="countdown" id="countdown"></div>
 
-  <!-- WISH -->
   <div class="wish" id="wish">
     <h2 id="name"></h2>
     <p>
@@ -170,126 +35,11 @@
     </p>
   </div>
 
-  <!-- MUSIC -->
-  <audio id="music" preload="auto">
+  <audio id="music">
     <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
   </audio>
 
-<script>
-  const card = document.getElementById("card");
-  const wish = document.getElementById("wish");
-  const nameEl = document.getElementById("name");
-  const music = document.getElementById("music");
-  const count = document.getElementById("countdown");
-
-  let effects = [];
-  let fireInterval;
-
-  function start() {
-    emojiBurst();
-    if (navigator.vibrate) navigator.vibrate(150);
-    runCountdown(3);
-  }
-
-  function runCountdown(n) {
-    count.textContent = n > 0 ? n : "🎉";
-    count.classList.add("show");
-
-    if (n > 0) {
-      setTimeout(() => runCountdown(n - 1), 800);
-    } else {
-      setTimeout(() => {
-        count.classList.remove("show");
-        celebrate();
-      }, 600);
-    }
-  }
-
-  function celebrate() {
-    document.body.classList.add("celebrated");
-    card.classList.add("hide");
-    wish.classList.add("show");
-    music.play().catch(()=>{});
-
-    animateName("VISHNU");
-    confetti();
-    balloons();
-    fireworks();
-
-    setTimeout(resetPage, 12000);
-  }
-
-  function animateName(text) {
-    nameEl.textContent = "";
-    [...text].forEach((c,i)=>{
-      setTimeout(()=> nameEl.textContent += c + " ", i*250);
-    });
-  }
-
-  function confetti() {
-    for(let i=0;i<120;i++){
-      const d=document.createElement("div");
-      d.className="confetti";
-      d.style.left=Math.random()*innerWidth+"px";
-      d.style.background=`hsl(${Math.random()*360},100%,50%)`;
-      d.style.width="8px"; d.style.height="14px";
-      d.style.animationDuration=Math.random()*3+2+"s";
-      document.body.appendChild(d);
-      effects.push(d);
-    }
-  }
-
-  function balloons() {
-    for(let i=0;i<20;i++){
-      const b=document.createElement("div");
-      b.className="balloon";
-      b.style.left=Math.random()*innerWidth+"px";
-      b.style.background=`hsl(${Math.random()*360},70%,60%)`;
-      b.style.animationDuration=Math.random()*6+6+"s";
-      document.body.appendChild(b);
-      effects.push(b);
-    }
-  }
-
-  function fireworks() {
-    fireInterval=setInterval(()=>{
-      for(let i=0;i<15;i++){
-        const f=document.createElement("div");
-        f.className="firework";
-        f.style.left="50%"; f.style.top="50%";
-        f.style.background=`hsl(${Math.random()*360},100%,60%)`;
-        f.style.setProperty("--x",`${Math.random()*400-200}px`);
-        f.style.setProperty("--y",`${Math.random()*400-200}px`);
-        document.body.appendChild(f);
-        effects.push(f);
-      }
-    },1500);
-  }
-
-  function emojiBurst() {
-    const emojis=["🎉","🎊","✨","🎂","🎁"];
-    for(let i=0;i<25;i++){
-      const e=document.createElement("div");
-      e.className="emoji";
-      e.textContent=emojis[Math.floor(Math.random()*emojis.length)];
-      e.style.left=Math.random()*innerWidth+"px";
-      e.style.fontSize="22px";
-      e.style.animationDuration=Math.random()*3+2+"s";
-      document.body.appendChild(e);
-      effects.push(e);
-    }
-  }
-
-  function resetPage() {
-    clearInterval(fireInterval);
-    music.pause(); music.currentTime=0;
-    document.body.classList.remove("celebrated");
-    card.classList.remove("hide");
-    wish.classList.remove("show");
-    effects.forEach(e=>e.remove());
-    effects=[];
-  }
-</script>
-
+  <!-- External JS ONLY -->
+  <script src="script.js"></script>
 </body>
 </html>
