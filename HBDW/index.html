@@ -1,1 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Wishes 🎉</title>
+  <meta charset="UTF-8" />
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      font-family: Arial;
+    }
+    .card {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h1 id="title">🎉 Hello!</h1>
+  <p id="msg"></p>
+</div>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const name = params.get("name") || "Friend";
+
+  document.getElementById("title").innerText =
+    `Hey ${name} 😎`;
+
+  document.getElementById("msg").innerText =
+    "May this year bring you success, happiness, and crazy memories 🔥🎊";
+</script>
+
+</body>
+</html>
 
