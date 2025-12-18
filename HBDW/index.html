@@ -109,112 +109,139 @@ p{font-size:1.2em;}
 </audio>
 
 <script>
-const params=new URLSearchParams(location.search);
-const name=params.get("name")||"Friend";
-const type=params.get("type");
-const theme=params.get("theme");
-const fx=(params.get("fx")||"").split(",");
+const params = new URLSearchParams(location.search);
+const name = params.get("name") || "Friend";
+const type = params.get("type");
+const theme = params.get("theme");
+const fx = (params.get("fx") || "").split(",");
 
 /* 🌈 Theme */
-if(theme==="light"||theme==="white")document.body.classList.add("light");
-if(theme==="black")document.body.classList.add("black");
+if (theme === "light" || theme === "white") document.body.classList.add("light");
+if (theme === "black") document.body.classList.add("black");
 
 /* 🎂 Message */
-let title=`Hey ${name} 🎉`;
-let msg="Wishing you happiness, success & endless smiles 😎✨";
-if(type==="birthday"){title=`Happy Birthday ${name} 🎂`;msg="Cake, joy & surprises all day 🎉💖";}
-if(type==="newyear"){title=`Happy New Year ${name} 🎊`;msg="New year, new goals, new wins 🚀✨";}
-titleEl.innerText=title;msgEl.innerText=msg;
+let title = `Hey ${name} 🎉`;
+let msg = "Wishing you happiness, success & endless smiles 😎✨";
 
-/* 🎉 Emoji fall */
-const emojis=["🎉","🎊","✨","💥","🔥","🎆","🚀","⭐"];
-setInterval(()=>{
-  const e=document.createElement("div");
-  e.className="fall";
-  e.innerText=emojis[Math.random()*emojis.length|0];
-  e.style.left=Math.random()*100+"vw";
-  e.style.animationDuration=3+Math.random()*4+"s";
-  e.style.fontSize=16+Math.random()*26+"px";
+if (type === "birthday") {
+  title = `Happy Birthday ${name} 🎂`;
+  msg = "Cake, joy & surprises all day 🎉💖";
+}
+if (type === "newyear") {
+  title = `Happy New Year ${name} 🎊`;
+  msg = "New year, new goals, new wins 🚀✨";
+}
+
+document.getElementById("title").innerText = title;
+document.getElementById("msg").innerText = msg;
+
+/* 🎉 Emoji falling */
+const emojis = ["🎉","🎊","✨","💥","🔥","🎆","🚀","⭐"];
+setInterval(() => {
+  const e = document.createElement("div");
+  e.className = "fall";
+  e.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+  e.style.left = Math.random() * 100 + "vw";
+  e.style.animationDuration = (3 + Math.random() * 4) + "s";
+  e.style.fontSize = (16 + Math.random() * 26) + "px";
   document.body.appendChild(e);
-  setTimeout(()=>e.remove(),8000);
-},220);
+  setTimeout(() => e.remove(), 8000);
+}, 220);
 
 /* 📄 Papers */
-if(fx.includes("papers")){
-  setInterval(()=>{
-    const p=document.createElement("div");
-    p.className="paper";
-    p.style.left=Math.random()*100+"vw";
-    p.style.animationDuration=4+Math.random()*5+"s";
-    p.style.background=["#fff","#ffeb3b","#80d8ff","#ff80ab"][Math.random()*4|0];
+if (fx.includes("papers")) {
+  setInterval(() => {
+    const p = document.createElement("div");
+    p.className = "paper";
+    p.style.left = Math.random() * 100 + "vw";
+    p.style.animationDuration = (4 + Math.random() * 5) + "s";
+    p.style.background = ["#fff","#ffeb3b","#80d8ff","#ff80ab"]
+      [Math.floor(Math.random() * 4)];
     document.body.appendChild(p);
-    setTimeout(()=>p.remove(),10000);
-  },300);
+    setTimeout(() => p.remove(), 10000);
+  }, 300);
 }
-
-/* ✨ Touch sparkles */
-document.addEventListener("touchstart",e=>{
-  const s=document.createElement("div");
-  s.className="sparkle";s.innerText="✨";
-  s.style.left=e.touches[0].clientX+"px";
-  s.style.top=e.touches[0].clientY+"px";
-  document.body.appendChild(s);
-  setTimeout(()=>s.remove(),800);
-});
 
 /* 🎵 Music */
-const music=document.getElementById("bgm");
-function toggleMusic(){music.paused?music.play():music.pause();}
-document.addEventListener("click",()=>music.play(),{once:true});
+const music = document.getElementById("bgm");
+function toggleMusic() {
+  music.paused ? music.play() : music.pause();
+}
+document.addEventListener("click", () => music.play(), { once: true });
 
-/* 🔊 SFX */
-let sfx=true;
-const fireSound=document.getElementById("fireSound");
-const popSound=document.getElementById("popSound");
-function toggleSfx(){sfx=!sfx;}
+/* 🔊 Sound effects */
+let sfx = true;
+const fireSound = document.getElementById("fireSound");
+const popSound = document.getElementById("popSound");
+function toggleSfx() { sfx = !sfx; }
 
-/* 🎆 Fireworks + Click Explosion */
-if(fx.includes("fireworks")){
-  const c=document.getElementById("fireworks");
-  const ctx=c.getContext("2d");
-  const ps=[];
-  const resize=()=>{c.width=innerWidth;c.height=innerHeight};
-  resize();addEventListener("resize",resize);
+/* 🎆 Fireworks + click */
+if (fx.includes("fireworks")) {
+  const canvas = document.getElementById("fireworks");
+  const ctx = canvas.getContext("2d");
+  const ps = [];
 
-  function explode(x,y){
-    const col=`hsl(${Math.random()*360},100%,60%)`;
-    for(let i=0;i<45;i++)
-      ps.push({x,y,a:Math.random()*6.28,s:Math.random()*6+2,o:1,c:col});
-    if(sfx){fireSound.currentTime=0;fireSound.play();}
+  function resize() {
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
   }
+  resize();
+  addEventListener("resize", resize);
 
-  document.addEventListener("click",e=>{
-    explode(e.clientX,e.clientY);
-    if(sfx){popSound.currentTime=0;popSound.play();}
-  });
-  document.addEventListener("touchstart",e=>{
-    const t=e.touches[0];explode(t.clientX,t.clientY);
-    if(sfx){popSound.currentTime=0;popSound.play();}
-  });
-
-  function anim(){
-    ctx.fillStyle="rgba(0,0,0,.2)";
-    ctx.fillRect(0,0,c.width,c.height);
-    for(let i=ps.length-1;i>=0;i--){
-      const p=ps[i];
-      p.x+=Math.cos(p.a)*p.s;
-      p.y+=Math.sin(p.a)*p.s;
-      p.o-=.02;
-      if(p.o<=0){ps.splice(i,1);continue;}
-      ctx.globalAlpha=p.o;ctx.fillStyle=p.c;
-      ctx.beginPath();ctx.arc(p.x,p.y,2,0,6.28);ctx.fill();
+  function explode(x, y) {
+    const color = `hsl(${Math.random() * 360},100%,60%)`;
+    for (let i = 0; i < 45; i++) {
+      ps.push({
+        x, y,
+        a: Math.random() * Math.PI * 2,
+        s: Math.random() * 6 + 2,
+        o: 1,
+        c: color
+      });
     }
-    ctx.globalAlpha=1;requestAnimationFrame(anim);
+    if (sfx) {
+      fireSound.currentTime = 0;
+      fireSound.play();
+    }
   }
-  setInterval(()=>explode(Math.random()*c.width,Math.random()*c.height*.5),1200);
-  anim();
+
+  document.addEventListener("click", e => {
+    explode(e.clientX, e.clientY);
+    if (sfx) {
+      popSound.currentTime = 0;
+      popSound.play();
+    }
+  });
+
+  function animate() {
+    ctx.fillStyle = "rgba(0,0,0,0.2)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    for (let i = ps.length - 1; i >= 0; i--) {
+      const p = ps[i];
+      p.x += Math.cos(p.a) * p.s;
+      p.y += Math.sin(p.a) * p.s;
+      p.o -= 0.02;
+      if (p.o <= 0) {
+        ps.splice(i, 1);
+        continue;
+      }
+      ctx.globalAlpha = p.o;
+      ctx.fillStyle = p.c;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(animate);
+  }
+
+  setInterval(() => explode(Math.random() * canvas.width,
+                            Math.random() * canvas.height * 0.5), 1200);
+  animate();
 }
 </script>
+
 
 </body>
 </html>
