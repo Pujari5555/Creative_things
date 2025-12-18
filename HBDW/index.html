@@ -22,6 +22,48 @@ body.light{
   --card:rgba(255,255,255,.75);
   --text:#222;
 }
+body.gold{
+  --bg1:#3a2c00;
+  --bg2:#b8860b;
+  --bg3:#ffd700;
+  --card:rgba(255,215,0,0.25);
+  --text:#1a1200;
+}
+body.neon{
+  --bg1:#0f0c29;
+  --bg2:#302b63;
+  --bg3:#24243e;
+  --card:rgba(0,255,255,0.15);
+  --text:#e0ffff;
+}
+body.pink{
+  --bg1:#ff9a9e;
+  --bg2:#fad0c4;
+  --bg3:#fad0c4;
+  --card:rgba(255,255,255,0.6);
+  --text:#5a0033;
+}
+body.ocean{
+  --bg1:#0f2027;
+  --bg2:#2c5364;
+  --bg3:#00c6ff;
+  --card:rgba(255,255,255,0.2);
+  --text:#e0f7ff;
+}
+body.matrix{
+  --bg1:#000000;
+  --bg2:#003300;
+  --bg3:#00ff00;
+  --card:rgba(0,255,0,0.15);
+  --text:#00ff00;
+}
+body.rainbow{
+  --bg1:#ff0000;
+  --bg2:#ff7f00;
+  --bg3:#8f00ff;
+  --card:rgba(255,255,255,0.25);
+  --text:white;
+}
 
 /* 🖤 Black */
 body.black{
@@ -188,14 +230,25 @@ p{font-size:1.2em;}
 
 <script>
 const params = new URLSearchParams(location.search);
-const name = params.get("name") || "Friend";
-const type = params.get("type");
-const theme = params.get("theme");
+
+const name  = params.get("name") || "Friend";
+const type  = params.get("type");
+const theme = params.get("theme");   // ✅ MISSING LINE (VERY IMPORTANT)
+const fx    = (params.get("fx") || "").split(",");
+
+/* 🌈 Theme handling (ALL themes supported) */
+const themes = [
+  "light","white","black",
+  "gold","neon","pink",
+  "ocean","matrix","rainbow"
+];
+
+if (themes.includes(theme)) {
+  document.body.classList.add(theme);
+}
+
 const fx = (params.get("fx") || "").split(",");
 
-/* 🌈 Apply theme */
-if (theme === "light" || theme === "white") document.body.classList.add("light");
-if (theme === "black") document.body.classList.add("black");
 
 /* 🎂 Message */
 let title = `Hey ${name} 🎉`;
@@ -203,11 +256,11 @@ let msg = "Wishing you happiness, success & endless smiles 😎✨";
 
 if (type === "birthday") {
   title = `Happy Birthday ${name} 🎂`;
-  msg = "Cake, joy & surprises all day 🎉💖";
+  msg = "Wishing you a day filled with smiles, joy, and great memories 🎉✨";
 }
 if (type === "newyear") {
   title = `Happy New Year ${name} 🎊`;
-  msg = "New year, new goals, new wins 🚀✨";
+  msg = "Fresh year, fresh vibes, and a lot of good memories ahead 😎🎊";
 }
 
 document.getElementById("title").innerText = title;
