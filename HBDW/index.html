@@ -238,16 +238,18 @@ const fx    = (params.get("fx") || "").split(",");
 
 /* 🌈 Theme handling (ALL themes supported) */
 const themes = [
-  "light","white","black",
+  "light","black",
   "gold","neon","pink",
   "ocean","matrix","rainbow"
 ];
 
-if (themes.includes(theme)) {
+if (theme === "white") {
+  document.body.classList.add("light");
+} else if (themes.includes(theme)) {
   document.body.classList.add(theme);
 }
 
-const fx = (params.get("fx") || "").split(",");
+
 
 
 /* 🎂 Message */
